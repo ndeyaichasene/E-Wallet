@@ -1,11 +1,16 @@
 <?php
+
+namespace Wallet\Validator;
+use function Wallet\Repository\trouverWalletParTelephone;
+use function Wallet\Repository\trouverWalletParCode;
+
 function estVide($valeur) {
     if ($valeur == '') {
         return true;
     }
     return false;
 }
-function nomValide($nom) {
+function nomValide(string $nom) {
     for ($i = 0; $i < strlen($nom); $i++) {
         if (is_numeric($nom[$i])) {
             return false;
@@ -13,28 +18,31 @@ function nomValide($nom) {
     }
     return true;
 }
-function montantPositif($montant) {
+function montantPositif(int $montant) {
     if ($montant >= 0) {
         return true;
     }
     return false;
 }
 
-function telephoneUnique($telephone) {
-    if (trouverWalletParTelephone($telephone)) {
-        return false;
+function telephoneUnique(string $telephone) {
+    $wallet = trouverWalletParTelephone($telephone);
+    if ($wallet == null) {
+        return true;
     }
-    return true;
+    return false;
 }
 
-function soldeSuffisant($telephone, $montant) {
+
+
+function soldeSuffisant(string $telephone,int $montant) {
     $wallet = trouverWalletParTelephone($telephone);
     if ($wallet['solde'] >= $montant) {
         return true;
     }
     return false;
 }
-function soldeValide($solde) {
+function soldeValide(int $solde) {
     if (!is_numeric($solde)) {
         return false;
     }
@@ -44,7 +52,7 @@ function soldeValide($solde) {
     return true;
 }
 
-function telephoneValide($telephone) {
+function telephoneValide(string $telephone) {
     if (strlen($telephone) != 9) {
         return false;
     }
@@ -66,7 +74,7 @@ function telephoneValide($telephone) {
     }
     return true;
 }
-function codeValide($code) {
+function codeValide(string $code) {
     if (strlen($code) != 4) {
         return false;
     }
@@ -78,14 +86,12 @@ function codeValide($code) {
     return true;
 }
 
-function codeUnique($code) {
-    global $wallets;
-    foreach ($wallets as $wallet) {
-        if ($wallet['codeSecret'] == $code) {
-            return false;
-        }
+function codeUnique(string $code) {
+    $wallet = trouverWalletParCode($code);
+    if ($wallet == null) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 ?>

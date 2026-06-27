@@ -1,0 +1,19 @@
+{
+    "name": "wallet/ewallet",
+    "description": "Système de gestion de portefeuille électronique",
+    "autoload": {
+        "files": [
+            "src/repository.php",
+            "src/validator.php",
+            "src/services.php",
+            "src/controller.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Ndeye Aissatou Sene",
+            "email": "ndeyaichasene@gmail.com"
+        }
+    ],
+    "require": {}
+}

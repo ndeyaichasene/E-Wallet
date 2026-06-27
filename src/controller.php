@@ -1,6 +1,10 @@
 <?php
 
-require_once 'services.php';
+namespace Wallet\Controller;
+use function Wallet\Services\creerWalletService;
+use function Wallet\Services\depotService;
+use function Wallet\Services\retraitService;
+use function Wallet\Services\listeTransactionService;
 
 function afficherMessage(string $message) {
     echo $message . "\n";
@@ -51,7 +55,7 @@ function retraitController() {
 }
 
 function listeTransactionController() {
-    $resultat = listeTansactionService();
+    $resultat = listeTransactionService();
     afficherMessage($resultat);
 }
 

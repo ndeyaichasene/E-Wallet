@@ -1,5 +1,12 @@
 <?php
-require_once 'controller.php';
+$wallets = [];
+$transactions = [];
+require 'vendor/autoload.php';
+use function Wallet\Controller\creerWalletController;
+use function Wallet\Controller\depotController;
+use function Wallet\Controller\retraitController;
+use function Wallet\Controller\listeTransactionController;
+use function Wallet\Controller\afficherMessage;
 
 function menu() {
     echo "

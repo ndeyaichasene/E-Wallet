@@ -1,8 +1,21 @@
 <?php
-require_once 'repository.php';
-require_once 'validator.php';
 
-function creerWalletService($telephone, $nom, $solde, $codeSecret) {
+namespace Wallet\Services;
+use function Wallet\Validator\estVide;
+use function Wallet\Validator\telephoneValide;
+use function Wallet\Validator\telephoneUnique;
+use function Wallet\Validator\nomValide;
+use function Wallet\Validator\soldeValide;
+use function Wallet\Validator\codeValide;
+use function Wallet\Validator\codeUnique;
+use function Wallet\Validator\montantPositif;
+use function Wallet\Validator\soldeSuffisant;
+use function Wallet\Repository\ajouterWallet;
+use function Wallet\Repository\trouverWalletParTelephone;
+use function Wallet\Repository\mettreAJourSolde;
+use function Wallet\Repository\ajouterTransaction;
+
+function creerWalletService(string $telephone,string $nom,int $solde,string $codeSecret) {
     if (estVide($telephone)) {
         return "Téléphone obligatoire";
     }
@@ -40,7 +53,7 @@ function creerWalletService($telephone, $nom, $solde, $codeSecret) {
     return "Wallet créé avec succès !";
 }
 
-function depotService($telephone, $montant) {
+function depotService(string $telephone,int $montant) {
     if (!trouverWalletParTelephone($telephone)) {
         return "Ce numéro n'existe pas";
     }
@@ -55,7 +68,7 @@ function depotService($telephone, $montant) {
     ]);
     return "Dépôt de " . $montant . " CFA effectué avec succès !";
 }
-function calculerFrais($montant) {
+function calculerFrais(int $montant) {
     if ($montant <= 10000) {
         return 200;
     } else if ($montant <= 100000) {
@@ -68,7 +81,7 @@ function calculerFrais($montant) {
         return $frais;
     }
 }
-function retraitService($telephone, $montant) {
+function retraitService(string $telephone,int $montant) {
     if (!trouverWalletParTelephone($telephone)) {
         return "Ce numéro n'existe pas";
     }
@@ -90,7 +103,7 @@ function retraitService($telephone, $montant) {
     return "Retrait de " . $montant . " CFA effectué ! Frais : " . $frais . " CFA";
 }
 
-function listeTansactionService() {
+function listeTransactionService() {
     global $transactions;
     if (count($transactions) == 0) {
         return "Aucune transaction";
